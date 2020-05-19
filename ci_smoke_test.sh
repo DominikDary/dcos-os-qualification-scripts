@@ -19,26 +19,8 @@ then
   TERRAFORM_PATH="terraform"
 fi
 
-cd gcp
-if [[ ! -v GOOGLE_APPLICATION_CREDENTIALS ]]
-then
-  echo "$GCP_CREDENTIALS" > creds.json
-  export GOOGLE_APPLICATION_CREDENTIALS=${PWD}/creds.json
-fi
-${TERRAFORM_PATH} init
-${TERRAFORM_PATH} validate -var "gcp_project=${GCP_PROJECT}" -var "gcp_ssh_pub_key_file=${PWD}/../id_rsa.pub"
-${TERRAFORM_PATH} plan -var "gcp_project=${GCP_PROJECT}" -var "gcp_ssh_pub_key_file=${PWD}/../id_rsa.pub"
-${TERRAFORM_PATH} validate -var-file desired_cluster_profile.tfvars.example -var "gcp_project=${GCP_PROJECT}" -var "gcp_ssh_pub_key_file=${PWD}/../id_rsa.pub"
-${TERRAFORM_PATH} plan -var-file desired_cluster_profile.tfvars.example -var "gcp_project=${GCP_PROJECT}" -var "gcp_ssh_pub_key_file=${PWD}/../id_rsa.pub"
 
 cd ../aws
-${TERRAFORM_PATH} init
-${TERRAFORM_PATH} validate
-${TERRAFORM_PATH} plan
-${TERRAFORM_PATH} validate -var-file desired_cluster_profile.tfvars.example
-${TERRAFORM_PATH} plan -var-file desired_cluster_profile.tfvars.example
-
-cd ../azure
 ${TERRAFORM_PATH} init
 ${TERRAFORM_PATH} validate
 ${TERRAFORM_PATH} plan
